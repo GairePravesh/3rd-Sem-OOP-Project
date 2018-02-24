@@ -1,1 +1,52 @@
-Work in progress
+Chat app using Sockets [ For linux ]
+
+Socket Programming
+* A way to speak to other programs using standard Unix file descriptor.
+* "Jeez, everything in a Unix is a file."
+* You make call to socket() routine and it returns socket decriptor which we use to communicate using send() and recv(), we could use write() and read() since its a file descriptor but send() and recv() provides much greater control over data transmissions.
+*Mainly two types of sockets - Stream Sockets(SOCK_STREAM) and Datagram Sockets(SOCK_DGRAM, connectionless socket).
+* Stream sockets are reliable two way communication sockets and has high level of data transmission quality, used in telnet apps, browsers use HTTP which uses stream sockets to get pages. They use TCP (Transmission Control Protocol) that makes sure that data comes error free and sequentially. IP deals with internet routing and not responsible for data integrity.
+* Datagram Sockets also called connectionless sockets are unreliable, data may come or not but if comes is error free. They also use IP for internet routing but not TCP instead use UDP (User Datagram Protocol). They are connectionless because you dont have to maintain open connection like in stream sockets. You just build a packet, apply IP header on it with destination inforamtion and send it out. They are used when a TCP stack is unavailable or few dropped packates are acceptable so used in multiplayer games, audio video conferencing, DHCP client etc.
+So why use such unreliable thing, just for speed and speed.
+
+Data Encapsulaion
+* [ Ethernet [ IP [ UDP [ TFTP [ DATA ] ] ] ] ]
+
+Layered Network Model
+• Application Layer (telnet, ftp, etc.)
+• Host-to-Host Transport Layer (TCP, UDP)
+• Internet Layer (IP and routing)
+• Network Access Layer (Ethernet, wi-fi, or whatever)
+
+IP Addresses
+* IPv4
+32 Bits
+* IPv6
+128 Bits
+* 127.0.0.1 or ::1 is a loopback address is the address of current machine working on.
+
+Subnets
+* Logicial sub-division of IP network
+* Netmask is a network portion of IP address which is bitwise-AND wih IP address to get network number. 
+For an IP address of 192.0.2.12 we bitwise AND 255.255.255.0 to get 192.0.2.0 which is its network number. 
+
+Port Number
+* 16-bit number ranging from 0 to 65535 that's like the local address for connection. 
+* Ports under 1024 are special purpose ports and requires special OS privileges to use.
+* 21 FTP, 80 for HTTP, 22 for SSH etc... 
+
+Byte Order
+* Big-Endian ----  Network Byte Order ---- Big End First
+* Little-Endian -- Host Byte Order ------- Used by computers to store numbers
+* Conversion of Network Byte Order and Host Byte Order before they informations go out or in to host:
+ htons() ---- host to network short
+ htonl() ---- host to network long
+ ntohs() ---- network to host short
+ ntohl() ---- network to host long
+
+
+
+
+
+	
+
