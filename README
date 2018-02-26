@@ -44,9 +44,92 @@ Byte Order
  ntohs() ---- network to host short
  ntohl() ---- network to host long
 
+*Program to Show IP address for a host
+#include<iostream>
+#include<cstring>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netdb.h>
+#include<arpa/inet.h>
+#include<netinet/in.h>
 
-
-
-
+int main(int argc, char *argv[])
+{
+	struct addrinfo hints, *res, *p;
+	int status;
+	char ipstr[INET6_ADDRSTRLEN];
+	if (argc != 2) 
+	{
+		fprintf(stderr,"usage: showip hostname\n");
+		return 1;
+	}
+	memset(&hints, 0, sizeof hints);
+	hints.ai_family = AF_UNSPEC; // AF_INET or AF_INET6 to force version
+	hints.ai_socktype = SOCK_STREAM;
+	if ((status = getaddrinfo(argv[1], NULL, &hints, &res)) != 0) 
+	{
+		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
+		return 2;
+	}
+	printf("IP addresses for %s:\n\n", argv[1]);
+	for(p = res;p != NULL; p = p->ai_next) 
+	{
+		void *addr;
+		char *ipver;
+		// get the pointer to the address itself,
+		// different fields in IPv4 and IPv6:
+		if (p->ai_family == AF_INET) 
+		{ 
+			// IPv4
+			struct sockaddr_in *ipv4 = (struct sockaddr_in *)p->ai_addr;
+			addr = &(ipv4->sin_addr);
+			ipver = "IPv4";
+		} 
+		else
+		{
+			 // IPv6
+			struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *)p->ai_addr;
+			addr = &(ipv6->sin6_addr);
+			ipver = "IPv6";
+		}
+		// convert the IP to a string and print it:
+		inet_ntop(p->ai_family, addr, ipstr, sizeof ipstr);
+		printf(" %s: %s\n", ipver, ipstr);
+	}
+	freeaddrinfo(res); // free the linked list
+	return 0;
+}
 	
+Socket()
+* socket() simply returns to you a socket descriptor that you can use in later system calls, or -1 on
+error.
+
+Bind()
+* Associates the socket with a port on the computer, -1 on error.
+
+connect()
+* connect to a host using IP address and port number, -1 on error.
+
+listen()
+* listen for a connection
+
+accept()
+* Connects to a pending request and returns socket file descriptor to use for single connection, -1 on error.
+
+send() and recv()
+* used for communication over sockets, send returns number of bytes sent and recv() returns 0 if connection is lost, -1 on error as usual.
+
+sendto() and recvfrom()
+* used for SOCK_DATAGRAM to communicate with destination address.
+
+close() and shutdown()
+* close() closes the socket descriptor whereas shutdown() gives a little more control over how you close,0 on success and -1 on error. shutdown() doesnot close the descriptor but changes its usability, to free file descriptor we need to use close().
+
+getpeername()
+* tells you who is at the other end of SOCK_STREAM connection.
+
+gethostname()
+* return name of computer program is running on.
+
+
 
