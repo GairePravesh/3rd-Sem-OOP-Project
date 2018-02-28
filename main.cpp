@@ -1,10 +1,11 @@
-#include"graphics.hpp"
+#include"homepage.hpp"
+#include<iostream>
+
 int main()
 {
-    //initialize window
-    RenderWindow window(VideoMode(500, 500), "Messenger");
-    GUI app(window);
+    RenderWindow home(VideoMode(500, 500), "Messenger",Style::Titlebar | Style::Close);
+    GUI app(home);
     app.run();
-    app.closeGUI();
+    app.closeWindow();
     return 0;
 }
