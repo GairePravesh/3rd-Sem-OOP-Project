@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1519824945 source:/home/pravesh/Documents/ChatApp/main.cpp
+	"graphics.hpp"
+
+1519824962 /home/pravesh/Documents/ChatApp/graphics.hpp
+	<SFML/Graphics.hpp>
+
