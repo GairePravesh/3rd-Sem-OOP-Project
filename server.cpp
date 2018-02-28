@@ -13,9 +13,18 @@
 #include<sys/wait.h>
 #include<signal.h>
 using namespace std;
+void doNew(int sock)
+{
+int n;
+char buffer[256];
+bzero(buffer,256);
+n=read(sock,buffer,255);
+n=write(sock,"Got message",11);
+cout<<"client said "<<buffer<<endl;
+}
 int main(int argc,char *argv[])
 {
-int sockfd,newsockfd,portno;
+int sockfd,newsockfd,portno,pid;
 socklen_t clilen;
 char buffer[256];
 struct sockaddr_in serv_addr,cli_addr;
@@ -50,22 +59,25 @@ cout<<"Error on binding"<<endl;
 listen(sockfd,5);
 //accept for incomming request
 clilen=sizeof(cli_addr);
+while(1)
+{
 newsockfd=accept(sockfd,(struct sockaddr *)&cli_addr,&clilen);
+
 if(newsockfd<0)
 {
 cout<<"Error on accepting"<<endl;
 }
-cout<<"Connection made to "<<ntohs(cli_addr.sin_port)<<" from port "<<inet_ntoa(cli_addr.sin_addr)<<endl;
-//send
-send(newsockfd,"Hello world",13,0);
-bzero(buffer,256);
-n=read(newsockfd,buffer,255);
-if(n<0)
+pid=fork();
+if(pid<0)
+cout<<"Error on creating new"<<endl;
+else if(pid==0)
 {
-cout<<"Error reading from socket"<<endl;
-}
-cout<<"The message is "<<buffer<<endl;
-close(newsockfd);
 close(sockfd);
+doNew(newsockfd);
+exit(0);
+}
+else 
+close(newsockfd);
+}
 return 0;
 }
