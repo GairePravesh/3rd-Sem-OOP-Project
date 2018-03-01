@@ -35,7 +35,7 @@ public:
            }
            window.display();
         }
-
+        std::cout<<String<<std::endl<<IP_address<<std::endl<<Port_no<<std::endl<<Username<<std::endl<<Password;
     }
     void createSprite(Texture &texture,Sprite &sprite,std::string image,int x,int y)
     {
@@ -143,55 +143,66 @@ public:
         drawBox(150,300);
         createSprite(Logintexture,Loginsprtie,"Password",50,400);
         drawBox(150,400);
+        drawBox(350,450,100,45);
+        displayText("Submit",352,460);
         if (Mouse::isButtonPressed(Mouse::Left))
         {
             if(isAreaClicked(150,100))
             {
+                displayText(IP_address,155,100);
                 textEntry(155,100,IP_address);
             }
-            if(isAreaClicked(150,200))
+            else if(isAreaClicked(150,200))
             {
+                 displayText(Port_no,155,200);
                  textEntry(155,200,Port_no);
             }
-            if(isAreaClicked(150,300))
+            else if(isAreaClicked(150,300))
             {
+                displayText(Username,155,300);
                 textEntry(155,300,Username);
             }
-            if(isAreaClicked(150,400))
+            else if(isAreaClicked(150,400))
             {
+                 displayText(Password,155,400);
                  textEntry(155,400,Password);
             }
-
+            else if(isAreaClicked(350,450))
+            {
+               loginResult();
+            }
         }
-
     }
     void textEntry(int x,int y,std::string &word)
     {
-        while(window.isOpen())
+        bool run=true;
+        while(window.isOpen() && run)
         {
             Event event;
-            while (window.pollEvent(event))
+            while (window.pollEvent(event) && run)
             {
                 if(event.type==Event::Closed)
                     closeWindow();
+                if (Mouse::isButtonPressed(Mouse::Left))
+                {
+                    if(isAreaClicked(x,y))
+                    {
+                        run=true;
+                        displayText(word,x,y);
+                    }
+                    else
+                        run=false;
+                }
                 if(Event::TextEntered)
                 {
                     if (event.type == Event::TextEntered)
                     {
-                        if(event.KeyPressed == Keyboard::BackSpace && word.size()!=0)
-                        {
-                            word.pop_back();
-                        }
-                        else if(event.KeyPressed==Keyboard::Return && word.size()>4)
-                        {
-                            break;
-                        }
-                        else if (event.text.unicode < 128)
+                       if (event.text.unicode < 128 && word.size()<16)
                         {
                             word.push_back((char)event.text.unicode);
+                            displayText(word,x,y);
                         }
                     }
-                    displayText(word,x,y);
                 }
              }
              window.display();
@@ -227,6 +238,14 @@ public:
             return true;
         else
             return false;
+    }
+    void loginResult()
+    {
+        // check if login username and password matches to database
+       // if(Username=="Pravesh Gaire" && Password=="12345")
+        //{
+            closeWindow();
+        //}
     }
 };
 
