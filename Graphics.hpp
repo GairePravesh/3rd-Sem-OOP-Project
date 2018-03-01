@@ -13,32 +13,9 @@ private:
     std::string Password;
     std::string serverIP;
     std::string serverPort;
-    int setX=600,setY=200;
-
+    bool loop=true;
 public:
     GUI(RenderWindow &w):window(w){}
-    void run()
-    {
-        window.setPosition(Vector2i(setX, setY));
-        window.setVerticalSyncEnabled(true);//activate vertical synchronization
-        // clear the window with black color
-        window.clear(Color(240,240,240));
-        // run the program as long as the window is open
-        while (window.isOpen())
-        {
-            // check all the window's events that were triggered since the last iteration of the loop
-            Event event;
-            while (window.pollEvent(event))
-            {
-                // "close requested" event: we close the window
-                if (event.type == Event::Closed)
-                    closeWindow();
-                Home();
-           }
-           window.display();
-        }
-        std::cout<<String<<std::endl<<IP_address<<std::endl<<Port_no<<std::endl<<Username<<std::endl<<Password;
-    }
     void createSprite(Texture &texture,Sprite &sprite,std::string image,int x,int y)
     {
         if(!texture.loadFromFile(image))
@@ -51,28 +28,7 @@ public:
         sprite.setPosition(Vector2f(x, y));
         window.draw(sprite);
     }
-    void Home()
-    {
-        Texture servertexture,clienttexture;
-        Sprite serversprite,clientsprite;
-        createSprite(servertexture,serversprite,"server",125,10);
-        createSprite(clienttexture,clientsprite,"client",130,255);
-        window.draw(serversprite);
-        window.draw(clientsprite);
-        if (Mouse::isButtonPressed(Mouse::Left))
-        {
-            int flag=isSpriteClicked(serversprite,clientsprite);
-            if(flag==1)
-            {
-                serverGUI();
-            }
-            if(flag==2)
-            {
-                clientGUI();
-            }
-        }
 
-    }
     int isSpriteClicked(Sprite &spr1,Sprite &spr2)
     {
         Vector2i mousePosition = Mouse::getPosition(window);
@@ -90,42 +46,7 @@ public:
     }
     void closeWindow()
     {
-
         window.close();
-    }
-    void serverGUI()
-    {
-        window.clear(Color(240,240,240));
-        while (window.isOpen())
-        {
-            // check all the window's events that were triggered since the last iteration of the loop
-            Event event;
-            while (window.pollEvent(event))
-            {
-                // "close requested" event: we close the window
-                if (event.type == Event::Closed)
-                    closeWindow();
-                serverHome();
-            }
-            window.display();
-        }
-    }
-    void clientGUI()
-    {
-        window.clear(Color(240,240,240));
-        while (window.isOpen())
-        {
-            // check all the window's events that were triggered since the last iteration of the loop
-            Event event;
-            while (window.pollEvent(event))
-            {
-                // "close requested" event: we close the window
-                if (event.type == Event::Closed)
-                    closeWindow();
-                clientHome();
-            }
-            window.display();
-        }
     }
     void serverHome()
     {
@@ -135,22 +56,25 @@ public:
         drawBox(50,300);
         drawBox(130,355,100,45);
         displayText("Host",145,365);
-        if (Mouse::isButtonPressed(Mouse::Left))
+        displayText(serverIP,55,160);
+        displayText(serverPort,55,310);
+        window.display();
+        while(true)
         {
-            if(isAreaClicked(50,150))
+            if (Mouse::isButtonPressed(Mouse::Left))
             {
-                displayText(serverIP,55,160);
-                textEntry(55,160,serverIP);
-            }
-            else if(isAreaClicked(50,300))
-            {
-                displayText(serverPort,55,310);
-                textEntry(55,310,serverPort);
-            }
-            else if(isAreaClicked(130,355))
-            {
-
-                closeWindow();
+                if(isAreaClicked(50,150))
+                {
+                    textEntry(55,160,serverIP);
+                }
+                else if(isAreaClicked(50,300))
+                {
+                    textEntry(55,310,serverPort);
+                }
+                else if(isAreaClicked(130,355))
+                {
+                    break;
+                }
             }
         }
     }
@@ -170,31 +94,42 @@ public:
         drawBox(150,400);
         drawBox(350,450,100,45);
         displayText("Submit",352,460);
-        if (Mouse::isButtonPressed(Mouse::Left))
+        displayText(IP_address,155,100);
+        displayText(Port_no,155,200);
+        displayText(Username,155,300);
+        displayText(Password,155,400);
+        window.display();
+        while(true)
         {
-            if(isAreaClicked(150,100))
+            if (Mouse::isButtonPressed(Mouse::Left))
             {
-                displayText(IP_address,155,100);
-                textEntry(155,100,IP_address);
-            }
-            else if(isAreaClicked(150,200))
-            {
-                 displayText(Port_no,155,200);
-                 textEntry(155,200,Port_no);
-            }
-            else if(isAreaClicked(150,300))
-            {
-                displayText(Username,155,300);
-                textEntry(155,300,Username);
-            }
-            else if(isAreaClicked(150,400))
-            {
-                 displayText(Password,155,400);
-                 textEntry(155,400,Password);
-            }
-            else if(isAreaClicked(350,450))
-            {
-               loginResult();
+                if(isAreaClicked(150,100))
+                {
+                    textEntry(155,100,IP_address);
+                }
+                else if(isAreaClicked(150,200))
+                {
+                     textEntry(155,200,Port_no);
+                }
+                else if(isAreaClicked(150,300))
+                {
+                    textEntry(155,300,Username);
+                }
+                else if(isAreaClicked(150,400))
+                {
+                     textEntry(155,400,Password);
+                }
+                else if(isAreaClicked(350,450))
+                {
+                   if(loginResult())
+                   {
+                        break;
+                   }
+                   else
+                   {
+                        //exception
+                   }
+                }
             }
         }
     }
@@ -213,7 +148,7 @@ public:
                     if(isAreaClicked(x,y))
                     {
                         run=true;
-                        displayText(word,x,y);
+                        //displayText(word,x,y);
                     }
                     else
                         run=false;
@@ -222,11 +157,16 @@ public:
                 {
                     if (event.type == Event::TextEntered)
                     {
-                       if (event.text.unicode < 128 && word.size()<16)
+                       if(event.text.unicode== 8 && word.size()>0)
+                       {
+                            word.pop_back();
+                            drawBox(x-5,y);
+                       }
+                       if (event.text.unicode > 32 && event.text.unicode < 125 && word.size()<15)
                         {
                             word.push_back((char)event.text.unicode);
-                            displayText(word,x,y);
                         }
+                       displayText(word,x,y);
                     }
                 }
              }
@@ -264,18 +204,10 @@ public:
         else
             return false;
     }
-    void loginResult()
+    bool loginResult()
     {
-        // check if login username and password matches to database
-       // if(Username=="Pravesh Gaire" && Password=="12345")
-        //{
-            closeWindow();
-        //}
+            return true;
     }
-    void messageGUI()
-    {
-        window.clear(Color(240,240,240));
 
-    }
 };
 
