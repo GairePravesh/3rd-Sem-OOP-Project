@@ -1,11 +1,16 @@
 #include<SFML/Graphics.hpp>
 #include<string>
+#include<iostream>
 using namespace sf;
 class GUI
 {
 private:
     RenderWindow &window;
     std::string String;
+    std::string IP_address;
+    std::string Port_no;
+    std::string Username;
+    std::string Password;
     int setX=600,setY=200;
 
 public:
@@ -27,47 +32,40 @@ public:
                 if (event.type == Event::Closed)
                     closeWindow();
                 Home();
-                window.display();
-            }
+           }
+           window.display();
         }
 
+    }
+    void createSprite(Texture &texture,Sprite &sprite,std::string image,int x,int y)
+    {
+        if(!texture.loadFromFile(image))
+            {
+                closeWindow();
+            }
+        texture.setSmooth(true);
+        sprite.setTexture(texture);
+        sprite.setColor(Color(240,240,240));
+        sprite.setPosition(Vector2f(x, y));
+        window.draw(sprite);
     }
     void Home()
     {
         Texture servertexture,clienttexture;
         Sprite serversprite,clientsprite;
-        if(!servertexture.loadFromFile("server.png"))
-        {
-            closeWindow();
-        }
-        if(!clienttexture.loadFromFile("client.png"))
-        {
-            closeWindow();
-        }
-        servertexture.setSmooth(true);
-        clienttexture.setSmooth(true);
-        serversprite.setTexture(servertexture);
-        clientsprite.setTexture(clienttexture);
-        serversprite.setColor(Color(240,240,240));
-        clientsprite.setColor(Color(240,240,240));
-        serversprite.setPosition(Vector2f(125, 10));
-        clientsprite.setPosition(Vector2f(130, 255));
+        createSprite(servertexture,serversprite,"server",125,10);
+        createSprite(clienttexture,clientsprite,"client",130,255);
         window.draw(serversprite);
         window.draw(clientsprite);
         if (Mouse::isButtonPressed(Mouse::Left))
         {
-            //std::cout<<"mouse clicked"<<std::endl;
             int flag=isSpriteClicked(serversprite,clientsprite);
             if(flag==1)
             {
-                //std::cout<<"server"<<std::endl;
-                String="Server";
                 serverGUI();
             }
             if(flag==2)
             {
-               // std::cout<<"client"<<std::endl;
-                String="Client";
                 clientGUI();
             }
         }
@@ -106,9 +104,8 @@ public:
                 if (event.type == Event::Closed)
                     closeWindow();
                 serverHome();
-                window.display();
             }
-
+            window.display();
         }
     }
     void clientGUI()
@@ -124,8 +121,8 @@ public:
                 if (event.type == Event::Closed)
                     closeWindow();
                 clientHome();
-                window.display();
             }
+            window.display();
         }
     }
     void serverHome()
@@ -134,78 +131,85 @@ public:
     }
     void clientHome()
     {
-        /*drawText("Login",30,0,0);
-        drawText("IP Address",20,0,100);
+        Texture Logintexture,IPtexture,Porttexture,Usertexture,Codetexture;
+        Sprite Loginsprtie,IPsprite,Portsprite,Usersprite,Codesprite;
+        createSprite(Logintexture,Loginsprtie,"login",50,10);
+        displayText("Login Credentials",150,10,30);
+        createSprite(Logintexture,Loginsprtie,"IP",50,100);
         drawBox(150,100);
-        drawText("Port No",20,0,200);
+        createSprite(Logintexture,Loginsprtie,"Port",50,200);
         drawBox(150,200);
-        drawText("Username",20,0,300);
+        createSprite(Logintexture,Loginsprtie,"User",50,300);
         drawBox(150,300);
-        drawText("Password",20,0,400);
-        drawBox(150,400);*/
-        Texture IPtexture,Porttexture,Usertexture,Codetexture;
-        Sprite IPsprite,Portsprite,Usersprite,Codesprite;
-        if(!IPtexture.loadFromFile("IP.png") || !Porttexture.loadFromFile("Port.png") || !Usertexture.loadFromFile("User.png") || Codetexture.loadFromFile("Password.png"))
+        createSprite(Logintexture,Loginsprtie,"Password",50,400);
+        drawBox(150,400);
+        if (Mouse::isButtonPressed(Mouse::Left))
         {
-            closeWindow();
-        }
-        IPtexture.setSmooth(true);
-        Porttexture.setSmooth(true);
-        Usertexture.setSmooth(true);
-        Codetexture.setSmooth(true);
-        IPsprite.setTexture(IPtexture);
-        Portsprite.setTexture(Porttexture);
-        Usersprite.setTexture(Usertexture);
-        Codesprite.setTexture(Codetexture);
-        IPsprite.setColor(Color(240,240,240));
-        Portsprite.setColor(Color(240,240,240));
-        Usersprite.setColor(Color(240,240,240));
-        Codesprite.setColor(Color(240,240,240));
-        IPsprite.setColor(Color(240,240,240));
-        Portsprite.setColor(Color(240,240,240));
-        Usersprite.setColor(Color(240,240,240));
-        Codesprite.setColor(Color(240,240,240));
-        window.draw(IPsprite);
-        window.draw(Portsprite);
-        window.draw(Usersprite);
-        window.draw(Codesprite);
-        /*if (Mouse::isButtonPressed(Mouse::Left))
-        {
-            //std::cout<<"mouse clicked"<<std::endl;
-            int flag=isSpriteClicked(IPsprite,Portsprite,Usersprite,Codesprite);
-            if(flag==1)
+            if(isAreaClicked(150,100))
             {
-                String="IPsprite";
+                textEntry(155,100,IP_address);
             }
-            if(flag==2)
+            if(isAreaClicked(150,200))
             {
-                String="Portsprite";
+                 textEntry(155,200,Port_no);
             }
-            if(flag==3)
+            if(isAreaClicked(150,300))
             {
-                String="Usersprite";
+                textEntry(155,300,Username);
             }
-            if(flag==4)
+            if(isAreaClicked(150,400))
             {
-                String="Codesprite";
+                 textEntry(155,400,Password);
             }
-        }*/
 
-    }/*
-    void drawText(std::string write,int s,int xpos,int ypos)
+        }
+
+    }
+    void textEntry(int x,int y,std::string &word)
+    {
+        while(window.isOpen())
+        {
+            Event event;
+            while (window.pollEvent(event))
+            {
+                if(event.type==Event::Closed)
+                    closeWindow();
+                if(Event::TextEntered)
+                {
+                    if (event.type == Event::TextEntered)
+                    {
+                        if(event.KeyPressed == Keyboard::BackSpace && word.size()!=0)
+                        {
+                            word.pop_back();
+                        }
+                        else if(event.KeyPressed==Keyboard::Return && word.size()>4)
+                        {
+                            break;
+                        }
+                        else if (event.text.unicode < 128)
+                        {
+                            word.push_back((char)event.text.unicode);
+                        }
+                    }
+                    displayText(word,x,y);
+                }
+             }
+             window.display();
+        }
+    }
+    void displayText(std::string word,int x,int y,int s=20)
     {
         Font font;
         if(!font.loadFromFile("font.ttf"))
         {
-            //error handler
             closeWindow();
         }
         Text text;
         text.setFont(font);
         text.setColor(Color::Black);
         text.setCharacterSize(s);
-        text.move(xpos,ypos);
-        text.setString(write);
+        text.setString(word);
+        text.setPosition(x,y);
         window.draw(text);
     }
     void drawBox(int setX,int setY,int width=300,int height=40)
@@ -214,6 +218,15 @@ public:
             rect.setSize(Vector2f(width,height));
             rect.setPosition(setX,setY);
             window.draw(rect);
-    }*/
+    }
+    bool isAreaClicked(int left,int top,int width=300,int height=40)
+    {
+        Vector2i mousePosition = Mouse::getPosition(window);
+        if(mousePosition.x > left && mousePosition.x < (left + width)
+            && mousePosition.y > top && mousePosition.y < (top + height))
+            return true;
+        else
+            return false;
+    }
 };
 
