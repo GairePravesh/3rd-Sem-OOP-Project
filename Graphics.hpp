@@ -11,6 +11,8 @@ private:
     std::string Port_no;
     std::string Username;
     std::string Password;
+    std::string serverIP;
+    std::string serverPort;
     int setX=600,setY=200;
 
 public:
@@ -127,7 +129,30 @@ public:
     }
     void serverHome()
     {
+        displayText("IP Address",50,100);
+        drawBox(50,150);
+        displayText("Port No",50,250);
+        drawBox(50,300);
+        drawBox(130,355,100,45);
+        displayText("Host",145,365);
+        if (Mouse::isButtonPressed(Mouse::Left))
+        {
+            if(isAreaClicked(50,150))
+            {
+                displayText(serverIP,55,160);
+                textEntry(55,160,serverIP);
+            }
+            else if(isAreaClicked(50,300))
+            {
+                displayText(serverPort,55,310);
+                textEntry(55,310,serverPort);
+            }
+            else if(isAreaClicked(130,355))
+            {
 
+                closeWindow();
+            }
+        }
     }
     void clientHome()
     {
@@ -246,6 +271,11 @@ public:
         //{
             closeWindow();
         //}
+    }
+    void messageGUI()
+    {
+        window.clear(Color(240,240,240));
+
     }
 };
 
