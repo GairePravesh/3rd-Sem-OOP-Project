@@ -44,6 +44,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Graphics.cpp" />
 		<Unit filename="Graphics.hpp" />
 		<Unit filename="exception.hpp" />
 		<Unit filename="graphics.hpp" />

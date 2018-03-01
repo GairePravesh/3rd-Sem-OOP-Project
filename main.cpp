@@ -38,9 +38,17 @@ int main()
     {
         case 1:
             app.serverHome();
+            if(app.loginResult())
+            {
+                // messenger
+            }
             break;
         case 2:
             app.clientHome();
+            if(app.loginResult())
+            {
+                //messenger
+            }
             break;
     }
     return 0;
