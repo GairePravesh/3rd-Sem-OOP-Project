@@ -1,5 +1,4 @@
-#include"homepage.hpp"
-#include<iostream>
+#include"Graphics.hpp"
 
 int main()
 {
