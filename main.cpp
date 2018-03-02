@@ -8,11 +8,8 @@ int main()
 {
     int flag;
     bool loop=true;
-    RenderWindow home(VideoMode(500, 500), "Messenger",Style::Titlebar | Style::Close);
-    RenderWindow popup(VideoMode(200, 200), "Messenger",Style::Titlebar | Style::Close);
     GUI app;
-    Exception dialog;
-    //app.initWindow(home,600,200,"Messenger : ");
+    RenderWindow home(VideoMode(500, 500), "Messenger",Style::Titlebar | Style::Close);
     home.setPosition(Vector2i(600, 200));
     home.setVerticalSyncEnabled(true);
     home.clear(Color(240,240,240));
@@ -28,7 +25,7 @@ int main()
         while (home.pollEvent(event) && loop)
         {
             if (event.type == Event::Closed)
-                app.closeWindow(home);
+                home.close();;
             if (Mouse::isButtonPressed(Mouse::Left))
             {
                 flag=app.isSpriteClicked(home,serversprite,clientsprite);
@@ -47,34 +44,37 @@ int main()
             {
                 #include"server.hpp"
                 Server server;
-                server.serverHome(home);
-                if(server.loginResult())
+                do
                 {
-                    // messenger
-
-                }
-                else
-                {
-                    //exception
-                    app.closeWindow(home);
-                }
-                break;
+                    server.serverHome(home);
+                    if(server.loginResult())
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Exception dialog(1);
+                        dialog.displayError();
+                    }
+                }while(!server.loginResult());
             }
         case 2:
             {
                 #include"client.hpp"
                 Client client;
-                client.clientHome(home);
-                if(client.loginResult())
+                do
                 {
-                    //messenger
-                }
-                else
-                {
-                    //exception
-                    app.closeWindow(home);
-                }
-                break;
+                    client.clientHome(home);
+                    if(client.loginResult())
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Exception dialog(2);
+                        dialog.displayError();
+                    }
+                }while(!client.loginResult());
             }
     }
     return 0;

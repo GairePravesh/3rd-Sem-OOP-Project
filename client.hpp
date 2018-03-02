@@ -9,6 +9,7 @@ private:
     std::string Port_no;
     std::string Username;
     std::string Password;
+    bool run=true;
     public:
     void clientHome(RenderWindow &window)
     {
@@ -32,33 +33,43 @@ private:
         GUI::displayText(window,Username,155,300);
         GUI::displayText(window,Password,155,400);
         window.display();
-        while(true)
+        Event event;
+        while(window.isOpen() && run)
         {
-            if (Mouse::isButtonPressed(Mouse::Left))
-            {
-                if(GUI::isAreaClicked(window,150,100))
-                {
-                    GUI::textEntry(window,155,100,IP_address);
-                }
-                else if(GUI::isAreaClicked(window,150,200))
-                {
-                     GUI::textEntry(window,155,200,Port_no);
-                }
-                else if(GUI::isAreaClicked(window,150,300))
-                {
-                    GUI::textEntry(window,155,300,Username);
-                }
-                else if(GUI::isAreaClicked(window,150,400))
-                {
-                     GUI::textEntry(window,155,400,Password);
-                }
-                else if(GUI::isAreaClicked(window,350,450))
-                {
-                   break;
-                }
-            }
+        	while(window.pollEvent(event) && run)
+        	{
+		    	if(event.type==Event::Closed)
+		    		exit(0);//window.close();
+		        if (Mouse::isButtonPressed(Mouse::Left))
+		        {
+		            if(GUI::isAreaClicked(window,150,100))
+		            {
+		                GUI::textEntry(window,155,100,IP_address);
+		            }
+		            else if(GUI::isAreaClicked(window,150,200))
+		            {
+		                 GUI::textEntry(window,155,200,Port_no);
+		            }
+		            else if(GUI::isAreaClicked(window,150,300))
+		            {
+		                GUI::textEntry(window,155,300,Username);
+		            }
+		            else if(GUI::isAreaClicked(window,150,400))
+		            {
+		                 GUI::textEntry(window,155,400,Password);
+		            }
+		            else if(GUI::isAreaClicked(window,350,450))
+		            {
+		               run=false;
+		            }
+		        }
+        	}
         }
+        run=true;
     }
 
-    bool loginResult(){}
+    bool loginResult()
+    {
+  		return false;  
+    }
 };

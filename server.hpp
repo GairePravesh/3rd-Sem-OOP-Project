@@ -7,6 +7,7 @@ class Server:public GUI
 private:
     std::string serverIP;
     std::string serverPort;
+    bool run=true;
 public:
      void serverHome(RenderWindow &window)
     {
@@ -20,25 +21,35 @@ public:
         GUI::displayText(window,serverIP,55,160);
         GUI::displayText(window,serverPort,55,310);
         window.display();
-        while(true)
+        Event event;
+        while(window.isOpen() && run)
         {
-            if (Mouse::isButtonPressed(Mouse::Left))
-            {
-                if(GUI::isAreaClicked(window,50,150))
-                {
-                    GUI::textEntry(window,55,160,serverIP);
-                }
-                else if(GUI::isAreaClicked(window,50,300))
-                {
-                    GUI::textEntry(window,55,310,serverPort);
-                }
-                else if(GUI::isAreaClicked(window,130,355))
-                {
-                    break;
-                }
-            }
+        	while(window.pollEvent(event) && run)
+        	{
+		    	if(event.type==Event::Closed)
+		    		exit(0);//window.close();
+		        if (Mouse::isButtonPressed(Mouse::Left))
+		        {
+		            if(GUI::isAreaClicked(window,50,150))
+		            {
+		                GUI::textEntry(window,55,160,serverIP);
+		            }
+		            else if(GUI::isAreaClicked(window,50,300))
+		            {
+		                GUI::textEntry(window,55,310,serverPort);
+		            }
+		            else if(GUI::isAreaClicked(window,130,355))
+		            {
+		                run=false;
+		            }
+		        }
+		    }    
         }
+        run=true;
     }
-     bool loginResult(){}
+     bool loginResult()
+     {
+     	return false;
+     }
 
 };

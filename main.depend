@@ -5,8 +5,14 @@
 1519824962 /home/pravesh/Documents/ChatApp/graphics.hpp
 	<SFML/Graphics.hpp>
 
-1519928018 source:/home/pravesh/Documents/Chat-App/main.cpp
+1519992176 source:/home/pravesh/Documents/Chat-App/main.cpp
+	<SFML/Graphics.hpp>
 	"Graphics.hpp"
+	"exception.hpp"
+	<string>
+	<iostream>
+	"server.hpp"
+	"client.hpp"
 
 1519839517 /home/pravesh/Documents/Chat-App/graphics.hpp
 	<SFML/Graphics.hpp>
@@ -18,10 +24,27 @@
 	<string>
 	<iostream>
 
-1519928164 /home/pravesh/Documents/Chat-App/Graphics.hpp
+1519989656 /home/pravesh/Documents/Chat-App/Graphics.hpp
 	<SFML/Graphics.hpp>
 	<string>
 	<iostream>
 
-1519921201 /home/pravesh/Documents/Chat-App/exception.hpp
+1519992375 /home/pravesh/Documents/Chat-App/exception.hpp
+	<SFML/Graphics.hpp>
+	"Graphics.hpp"
+	<string>
+	<iostream>
+
+1519989751 source:/home/pravesh/Documents/Chat-App/Graphics.cpp
+	"Graphics.hpp"
+
+1519992264 /home/pravesh/Documents/Chat-App/server.hpp
+	<SFML/Graphics.hpp>
+	<string>
+	<iostream>
+
+1519992007 /home/pravesh/Documents/Chat-App/client.hpp
+	<SFML/Graphics.hpp>
+	<string>
+	<iostream>
 

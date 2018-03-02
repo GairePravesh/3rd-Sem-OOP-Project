@@ -1,12 +1,4 @@
 #include"Graphics.hpp"
-//void initWindow(RenderWindow &window,int x,int y,std::string title)
-//{
-   // window.setPosition(Vector2i(x, y));
-    //window.setVerticalSyncEnabled(true);
-    //window.clear(Color(240,240,240));
-   // window.setTitle(title);
-    //window.display();
-//}
 void GUI::textEntry(RenderWindow &window,int x,int y,std::string &word)
 {
     bool run=true;
@@ -16,7 +8,7 @@ void GUI::textEntry(RenderWindow &window,int x,int y,std::string &word)
         while (window.pollEvent(event) && run)
         {
             if(event.type==Event::Closed)
-                closeWindow(window);
+                window.close();
             if (Mouse::isButtonPressed(Mouse::Left))
             {
                 if(isAreaClicked(window,x,y))
@@ -59,7 +51,7 @@ void GUI::displayText(RenderWindow &window,std::string word,int x,int y,int s)
     Font font;
     if(!font.loadFromFile("font.ttf"))
     {
-        closeWindow(window);
+        window.close();
     }
     Text text;
     text.setFont(font);
@@ -73,7 +65,7 @@ void GUI::createSprite(RenderWindow &window,Texture &texture,Sprite &sprite,std:
 {
     if(!texture.loadFromFile(image))
         {
-            closeWindow(window);
+            window.close();
         }
     texture.setSmooth(true);
     sprite.setTexture(texture);
@@ -105,7 +97,4 @@ bool GUI::isAreaClicked(RenderWindow &window,int left,int top,int width,int heig
     else
         return false;
 }
-void GUI::closeWindow(RenderWindow &window)
-{
-    window.close();
-}
+
