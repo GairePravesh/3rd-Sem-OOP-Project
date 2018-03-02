@@ -1,12 +1,12 @@
 #include<SFML/Graphics.hpp>
 #include<string>
 #include<iostream>
-#include"Graphics.hpp"
-class Exception:public GUI
+using namespace sf;
+//#include"Graphics.hpp"
+class Exception
 {
 private:
-    RenderWindow &window;
+    //RenderWindow popup(VideoMode(200, 200), "Messenger",Style::Titlebar | Style::Close);
 public:
-    Exception(RenderWindow &w):window(w){}
 
-}
+};
