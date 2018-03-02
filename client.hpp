@@ -70,6 +70,17 @@ private:
 
     bool loginResult()
     {
-  		return false;  
+        ifstream file("database.txt");
+        if(file.is_open())
+        {
+	    while(getline(file, line))
+	    {
+	        if (line.find(Username+Password) != string::npos)
+	        {
+		    return true;
+	        }
+	    }
+        }
+        return false;
     }
 };
