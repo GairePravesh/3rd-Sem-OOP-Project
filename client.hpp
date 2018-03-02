@@ -1,7 +1,6 @@
 #include<SFML/Graphics.hpp>
 #include<string>
 #include<iostream>
-#include<regex>
 using namespace sf;
 class Client:public GUI
 {
@@ -71,6 +70,17 @@ private:
 
     bool loginResult()
     {
-  		 std::regex check((Username)" "(Password));
+        ifstream file("database.txt");
+        if(file.is_open())
+        {
+	    while(getline(file, line))
+	    {
+	        if (line.find(Username+Password) != string::npos)
+	        {
+		    return true;
+	        }
+	    }
+        }
+        return false;
     }
 };
