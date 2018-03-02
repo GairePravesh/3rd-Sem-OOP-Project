@@ -1,6 +1,7 @@
 #include<SFML/Graphics.hpp>
 #include<string>
 #include<iostream>
+#include<regex>
 using namespace sf;
 class Client:public GUI
 {
@@ -70,6 +71,6 @@ private:
 
     bool loginResult()
     {
-  		return false;  
+  		 std::regex check((Username)" "(Password));
     }
 };

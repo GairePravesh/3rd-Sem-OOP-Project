@@ -49,7 +49,10 @@ public:
     }
      bool loginResult()
      {
-     	return false;
+     	if (serverIP=="default")
+     		return true;
+     	else
+     		return false;
      }
 
 };
