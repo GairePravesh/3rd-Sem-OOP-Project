@@ -85,12 +85,17 @@ void textEntry(RenderWindow &window,std::string &word,int x,int y,int w=300,int 
                     }
                     else if(event.text.unicode==13 && word.size()>0)
                     {
-                        if(line<30)
+                        if(line<26)
                         {
                             displayText(window,word,15,15+line*20,15);
                             word="";
                             drawBox(window,x-5,y-5,w,h);
                             line+=2;
+                        }
+                        else
+                        {
+                            line=0;
+                            drawBox(window,10,10,580,530);
                         }
                     }
                    displayText(window,word,x,y);
@@ -165,7 +170,7 @@ void messageHandler(RenderWindow &window)
 	        {
 	            if(isAreaClicked(window,10,550,580,40))
 	            {
-                    textEntry(window,message,15,555,580,40,33);
+                    textEntry(window,message,15,555,580,40,43);
 	            }
             }
 		}
