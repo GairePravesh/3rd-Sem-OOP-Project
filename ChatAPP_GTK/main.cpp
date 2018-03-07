@@ -2,7 +2,9 @@
 */
 
 #include<gtkmm.h>
-
+#include<iostream>
+#include<string>
+using namespace std;
 
 class mainWindow:public Gtk::Window
 {
@@ -43,29 +45,72 @@ virtual void on_button_pressed()
 class Login:public Gtk::Window
 {
 public:
-Login():grid(6,1,true),m_button("Login"),image("login"),user_Label("Username"),password_Label("Password")
+Login():grid(6,4,true),m_button("Login"),image("login"),user_Label("Username"),password_Label("Password")
 {
 	set_title("Login");
 	set_size_request(400,400);
 	set_border_width(10);
 	set_position(Gtk::WIN_POS_CENTER);
+	user_Entry.set_max_length(20);
+	password_Entry.set_max_length(20);
+	password_Entry.set_visibility(false);
 	add(grid);
-	grid.attach(image,0,1,0,1);
-	grid.attach(user_Label,0,1,1,2);
-	grid.attach(password_Label,0,1,3,4);
-	grid.attach(m_button,0,1,5,6);
+	grid.attach(image,1,3,0,1);
+	grid.attach(user_Label,1,3,1,2);
+	grid.attach(user_Entry,1,3,2,3);
+	grid.attach(password_Label,1,3,3,4);
+	grid.attach(password_Entry,1,3,4,5);
+	grid.attach(m_button,3,4,5,6);
 	m_button.signal_pressed().connect(sigc::mem_fun(*this,&Login::checkLogin));
 	show_all_children();
 }
-protected:
-std::string Username;
-std::string Password;
+
+string getUsername()
+{
+	return Username;
+}
+
+string getPassword()	
+{
+	return Password;
+}
+virtual ~Login(){}
+private:
+string Username,Password;
 Gtk::Image image;
 Gtk::Button m_button;
 Gtk::Table grid;
 Gtk::Label user_Label;
 Gtk::Label password_Label;
+Gtk::Entry user_Entry;
+Gtk::Entry password_Entry;
 virtual void checkLogin()
+{
+	Username=user_Entry.get_text();
+	Password=password_Entry.get_text();
+	Gtk::Widget::hide();
+}
+};
+
+class Chat:public Gtk::Window
+{
+private:
+string Name;
+Gtk::Entry messageEntry;
+Gtk::Table grid;
+public:
+Chat(string n):Name(n),grid(10,1,true)
+{
+	set_title("Group Chat");
+	set_size_request(800,600);
+	set_border_width(10);
+	set_position(Gtk::WIN_POS_CENTER);
+	messageEntry.set_max_length(50);
+	add(grid);
+	grid.attach(messageEntry,0,1,9,10);
+	show_all_children();
+}
+virtual ~Chat()
 {
 }
 };
@@ -76,5 +121,7 @@ int main(int argc,char *argv[])
 	Gtk::Main::run(window);
 	Login login;
 	Gtk::Main::run(login);
+	Chat chat(login.getUsername());
+	Gtk::Main::run(chat);
 	return 0;
 }
