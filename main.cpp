@@ -1,7 +1,10 @@
+#include<SFML/Graphics.hpp>
 #include<iostream>
 #include<string>
-#include<SFML/Graphics.hpp>
 using namespace sf;
+class Utils
+{
+public:
 bool isAreaClicked(RenderWindow &window,int left,int top,int width=300,int height=40)
 {
     Vector2i mousePosition = Mouse::getPosition(window);
@@ -74,6 +77,7 @@ void textEntry(RenderWindow &window,std::string &word,int x,int y,int w=300,int 
                    {
                         word.pop_back();
                         drawBox(window,x-5,y-5,w,h);
+                        displayText(window,word,x,y);
                    }
                    else if(event.text.unicode==32 && word.size()>0)
                    {
@@ -82,23 +86,30 @@ void textEntry(RenderWindow &window,std::string &word,int x,int y,int w=300,int 
                    else if (event.text.unicode > 32 && event.text.unicode < 125 && word.size()<limit)
                     {
                         word.push_back((char)event.text.unicode);
+                        displayText(window,word,x,y);
                     }
-                    else if(event.text.unicode==13 && word.size()>0)
+                    else if(event.text.unicode==13 && word.size()>0 && limit==31)
                     {
-                        if(line<26)
+
+                        displayText(window,"Pravesh",10,15+line*30);
+                        if(line<17)
                         {
-                            displayText(window,word,15,15+line*20,15);
-                            word="";
                             drawBox(window,x-5,y-5,w,h);
-                            line+=2;
+                            displayText(window,word,150,15+line*30);
+                            word="";
+                            line+=1;
                         }
                         else
                         {
                             line=0;
+                            drawBox(window,x-5,y-5,w,h);
                             drawBox(window,10,10,580,530);
+                            displayText(window,word,150,15+line*30);
+                            word="";
+                            line++;
+
                         }
                     }
-                   displayText(window,word,x,y);
                 }
             }
          }
@@ -106,24 +117,67 @@ void textEntry(RenderWindow &window,std::string &word,int x,int y,int w=300,int 
     }
 }
 
+};
+class App:public Utils
+{
+private:
+RenderWindow &window;
+std::string Username,Password,message;
+public:
+App(RenderWindow &w):window(w){}
+
+void makeWindow()
+{
+	window.setPosition(Vector2i(600,200));
+	window.setVerticalSyncEnabled(true);
+	window.clear(Color(240,240,240));
+}
+void showHomepage()
+{
+	window.clear(Color(240,240,240));
+	Texture texture;
+	Sprite sprite;
+	Utils::createSprite(window,texture,sprite,"client",175,200);
+	Event event;
+	bool run=true;
+	while(run)
+	{
+		while (window.pollEvent(event) && run)
+		{
+		    if (event.type == Event::Closed)
+		        window.close();
+		    if (Mouse::isButtonPressed(Mouse::Left))
+		    {
+		        if(Utils::isAreaClicked(window,sprite.getGlobalBounds().left,sprite.getGlobalBounds().top,
+		        				(sprite.getGlobalBounds().left+sprite.getGlobalBounds().width),
+		        				(sprite.getGlobalBounds().top+sprite.getGlobalBounds().height)))
+		        {
+		            run=false;
+		        }
+		    }
+		}
+		window.display();
+	}
+}
+
 bool checkLogin()
 {
 	return true;
 }
-void login(RenderWindow &window)
+
+void login( )
 {
     window.clear(Color(240,240,240));
-	std::string Username,Password;
     Texture Usertexture,Codetexture;
     Sprite Usersprite,Codesprite;
-    createSprite(window,Usertexture,Usersprite,"User",50,150);
-    drawBox(window,150,150,300,40);
-    createSprite(window,Codetexture,Codesprite,"Password",50,350);
-    drawBox(window,150,350,300,40);
-    drawBox(window,350,450,100,45);
-    displayText(window,"Submit",352,460);
-    displayText(window,Username,155,300);
-    displayText(window,Password,155,400);
+    Utils::createSprite(window,Usertexture,Usersprite,"User",50,150);
+    Utils::drawBox(window,150,150,300,40);
+    Utils::createSprite(window,Codetexture,Codesprite,"Password",50,350);
+    Utils::drawBox(window,150,350,300,40);
+    Utils::drawBox(window,350,450,100,45);
+    Utils::displayText(window,"Submit",352,460);
+    Utils::displayText(window,Username,155,300);
+    Utils::displayText(window,Password,155,400);
     window.display();
     Event event;
     bool loop=true;
@@ -135,15 +189,15 @@ void login(RenderWindow &window)
 	    		window.close();
 	        if (Mouse::isButtonPressed(Mouse::Left))
 	        {
-	            if(isAreaClicked(window,150,150))
+	            if(Utils::isAreaClicked(window,150,150))
 	            {
-                    textEntry(window,Username,155,155);
+                    Utils::textEntry(window,Username,155,155);
 	            }
-	            else if(isAreaClicked(window,150,350))
+	            else if(Utils::isAreaClicked(window,150,350))
 	            {
-                     textEntry(window,Password,155,355);
+                     Utils::textEntry(window,Password,155,355);
 	            }
-	            else if(isAreaClicked(window,350,450,100,45))
+	            else if(Utils::isAreaClicked(window,350,450,100,45))
 	            {
                     loop=false;
 	            }
@@ -151,14 +205,13 @@ void login(RenderWindow &window)
     	}
     }
 }
-
-void messageHandler(RenderWindow &window)
+void startChatWindow()
 {
-    std::string message;
+	window.clear(Color(240,240,240));
     window.clear(Color(150,150,150));
 	bool run=true;
-    drawBox(window,10,550,580,40);
-    drawBox(window,10,10,580,530);
+    Utils::drawBox(window,10,550,580,40);
+    Utils::drawBox(window,10,10,580,530);
 	Event event;
 	while(window.isOpen() && run)
 	{
@@ -168,47 +221,27 @@ void messageHandler(RenderWindow &window)
 		        window.close();
             if (Mouse::isButtonPressed(Mouse::Left))
 	        {
-	            if(isAreaClicked(window,10,550,580,40))
+	            if(Utils::isAreaClicked(window,10,550,580,40))
 	            {
-                    textEntry(window,message,15,555,580,40,43);
+                    Utils::textEntry(window,message,15,555,580,40,31);
 	            }
             }
 		}
 		window.display();
 	}
 }
-int main()
+};
+
+int main(void)
 {
-	RenderWindow window(VideoMode(600,600),"Messenger");
-	window.setPosition(Vector2i(600,200));
-	window.setVerticalSyncEnabled(true);
-	Texture texture;
-	Sprite sprite;
-	window.clear(Color(240,240,240));
-	createSprite(window,texture,sprite,"client",175,200);
-	Event event;
-	bool run=true;
-	while(window.isOpen() && run)
-	{
-        window.display();
-		while (window.pollEvent(event) && run)
-		{
-		    if (event.type == Event::Closed)
-		        window.close();
-		    if (Mouse::isButtonPressed(Mouse::Left))
-		    {
-		        if(isAreaClicked(window,sprite.getGlobalBounds().left,sprite.getGlobalBounds().top,(sprite.getGlobalBounds().left+sprite.getGlobalBounds().width),(sprite.getGlobalBounds().top+sprite.getGlobalBounds().height)))
-		        {
-		            run=false;
-		        }
-		    }
-		}
-	}
-    login(window);
-    messageHandler(window);
+    RenderWindow window(VideoMode(600,600),"Messenger");
+	App app(window);
+	app.makeWindow();
+	app.showHomepage();
+	app.login();
+	app.startChatWindow();
 	return 0;
 }
-
 
 
 
