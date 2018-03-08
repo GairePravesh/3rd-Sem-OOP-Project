@@ -1,13 +1,41 @@
 #include<gtkmm.h>
 #include<iostream>
 class myWindow:public Gtk::Window{
+private:
+
 public:
 myWindow()
 {
-    //set_default_size(400,400);
-    set_title("Login");
+	Gtk::Box *vbox=Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL,0));
+    add(*vbox);
+	Gtk::Grid *grid=Gtk::manage(new Gtk::Grid);
+	vbox->add(*grid);
+	grid->set_border_width(20);
+    grid->set_row_spacing(10);
+	Gtk::Image *image=Gtk::manage(new Gtk::Image);
+	Gtk::Button *button=Gtk::manage(new Gtk::Button);
+    set_default_size(100,100);
+    set_title("Messenger");
     set_position(Gtk::WIN_POS_CENTER);
-    Gtk::Box *vbox=Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL,0));
+    image->set("client");
+	button->set_label("Open");
+	button->set_hexpand(true);
+	grid->attach(*image,0,0,1,1);
+	grid->attach(*button,0,1,1,1);
+	button->signal_pressed().connect(sigc::mem_fun(*this,&myWindow::login));
+	vbox->show_all();
+}
+void login()
+{
+
+	Glib::ListHandle<Widget*> childList = this->get_children();
+    Glib::ListHandle<Widget*>::iterator it = childList.begin();
+    while (it != childList.end())
+    {
+        Gtk::Container::remove(*(*it));
+        it++;
+    }
+	Gtk::Box *vbox=Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL,0));
     add(*vbox);
     Gtk::Grid *grid=Gtk::manage(new Gtk::Grid);
     grid->set_border_width(10);
@@ -29,8 +57,13 @@ myWindow()
     grid->attach(*blogin,2,2,1,1);
     vbox->show_all();
 }
+void on_exit_clicked()
+{
+exit(1);
+}
 virtual ~myWindow()
 {
+
 }
 protected:
 void on_login_click(Gtk::Entry *euname,Gtk::Entry *epword)
@@ -51,7 +84,7 @@ void on_login_click(Gtk::Entry *euname,Gtk::Entry *epword)
 }
 
 
-private:
+
 };
 
 
@@ -102,6 +135,7 @@ Gtk::Label *label;
 Gtk::Entry *text;
 Gtk::ScrolledWindow *scroll;
 std::string emessage;
+int row=0;
 protected:
 void on_quit_click()
 {
@@ -113,6 +147,7 @@ void on_button_click()
         label->set_markup("<span color='red'>Enter Message: </span>");
     else
     {
+    	row++;
         label->set_markup("<span color='black'>Enter Message: </span>");
         Gtk::TreeModel::Row row = *(refTreeModel->append());
         row[columns.col_name] = "Pravesh";
@@ -121,6 +156,7 @@ void on_button_click()
             emessage=emessage.substr(0,50)+"\n"+emessage.substr(50);
         row[columns.col_text] = emessage;
         text->set_text("");
+        //Gtk::ListStore::clear();
     }
 }
 class ModelColumns:public Gtk::TreeModel::ColumnRecord
@@ -143,8 +179,10 @@ int main(int argc,char *argv[])
     Glib::RefPtr<Gtk::Application>win1 =Gtk::Application::create(argc,argv);
     myWindow window;
     win1->run(window);
+
     Glib::RefPtr<Gtk::Application>win2 =Gtk::Application::create(argc,argv);
     Chat chat;
     win2->run(chat);
+
     return 0;
 }
