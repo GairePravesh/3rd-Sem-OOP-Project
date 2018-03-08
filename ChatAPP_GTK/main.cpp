@@ -6,6 +6,35 @@
 #include<string>
 using namespace std;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 class mainWindow:public Gtk::Window
 {
 public:
@@ -18,7 +47,7 @@ mainWindow()
 	/*add(m_Frame);
 	m_Frame.set_label("Click on the logo below to Login");
 	m_Frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
-	*/
+	*
 	image.set("client");
 	m_button.set_image(image);
 	//mainGrid.attach(image,5,0,2,1);
@@ -37,8 +66,7 @@ Gtk::Button m_button;
 //Gtk::Grid mainGrid;
 virtual void on_button_pressed()
 {
-	//exit(1);
-	Gtk::Widget::hide();
+
 }
 };
 
@@ -89,6 +117,7 @@ virtual void checkLogin()
 	Username=user_Entry.get_text();
 	Password=password_Entry.get_text();
 	Gtk::Widget::hide();
+
 }
 };
 
@@ -98,18 +127,22 @@ private:
 string Name;
 Gtk::Entry messageEntry;
 Gtk::Table grid;
+Gtk::Frame frame;
+
 public:
-Chat(string n):Name(n),grid(10,1,true)
+Chat(string n):Name(n),grid(10,4,true),frame("Group Chat")
 {
-	set_title("Group Chat");
+	set_title("Messenger");
 	set_size_request(800,600);
 	set_border_width(10);
 	set_position(Gtk::WIN_POS_CENTER);
 	messageEntry.set_max_length(50);
 	add(grid);
-	grid.attach(messageEntry,0,1,9,10);
+	grid.attach(frame,0,4,0,9);
+	grid.attach(messageEntry,0,4,9,10);
 	show_all_children();
 }
+
 virtual ~Chat()
 {
 }
@@ -124,4 +157,4 @@ int main(int argc,char *argv[])
 	Chat chat(login.getUsername());
 	Gtk::Main::run(chat);
 	return 0;
-}
+}*/
