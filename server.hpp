@@ -18,7 +18,7 @@ class Server
 private:
 	fd_set master;    // master file descriptor list
     fd_set read_fds;  // temp file descriptor list for select()
-    int fdmax;        // maximum file descriptor number
+    int fdmax=10;        // maximum file descriptor number
 
     int listener;     // listening socket descriptor
     int newfd;        // newly accept()ed socket descriptor
@@ -33,6 +33,7 @@ private:
     int yes=1;        // for setsockopt() SO_REUSEADDR, below
     int i, j, rv;
 
+	int client_socket[10];
 
     struct addrinfo hints, *ai, *p;
 
@@ -126,10 +127,17 @@ read_fds = master; // copy it
                     newfd = accept(listener,
                         (struct sockaddr *)&remoteaddr,
                         &addrlen);
-
-                        map<int, string> mp;
+						for(int itr=0; itr<fdmax; itr++) {
+					if(client_socket[itr] == 0) {
+						client_socket[itr] = newfd;
+						map<int, string> mp;
 						mp[newfd] = "NULL";
 						clients_info.push_back(mp);
+
+						break;
+					}
+				}
+
 
                     if (newfd == -1) {
                        	cout<<"error on accept"<<endl;
@@ -178,29 +186,32 @@ read_fds = master; // copy it
 						for(int iter=0; iter<clients_info.size(); iter++) {
 							map<int, string> mp = clients_info[iter];
 							for(auto it=mp.begin(); it != mp.end(); it++) {
-								if(it -> first == i) {
+								if(it -> first == i && it->second!="online clients") {
 									mp[i] = string(buf).substr(0,pos);
 									break;
 								}
 							}
 							clients_info[iter] = mp;
 						}
-						if(string(buf).substr("online clients")!=npos)
+						if(string(buf).find("online clients")!=string::npos)
 						{
 							string client_names;
 							for(int itr=0; itr<clients_info.size(); itr++) {
 							map<int, string> mp = clients_info[itr];
 							for(auto it = mp.begin(); it != mp.end(); it++) {
-								if(it -> second != "NULL" && it -> first != i) {
-									client_names = client_names + it -> second;
-									client_names = client_names + "\n";
+								if(it -> second != "NULL"&& it -> first != i) {
+									client_names = client_names + it -> second +"\n";
+
 								}
 							}
 						}
 
-							buf=client_names.c_str();
+							//strcpy(buf,client_names.c_str());
+							if (send(i, client_names.c_str(), nbytes, 0) == -1) {
+		                                    cout<<"erro on send"<<endl;
+		                                }
 
-						}
+						}else{
 
 		                    for(j = 0; j <= fdmax; j++) {
 		                        // send to everyone!
@@ -213,7 +224,7 @@ read_fds = master; // copy it
 		                                }
 		                            }
 		                        }
-		                    }
+		                    }}
 
                     }
                 } // END handle data from client

@@ -165,7 +165,7 @@ void Client::chat()
     button3->signal_clicked().connect(sigc::mem_fun(*this, &Client::on_button3_click));
     button4->signal_clicked().connect(sigc::mem_fun(*this, &Client::on_button4_click));
     button5->signal_clicked().connect(sigc::mem_fun(*this, &Client::showClients));
-    Glib::signal_timeout().connect( sigc::mem_fun(*this, &Client::receiveMessage),50 );
+    Glib::signal_timeout().connect( sigc::mem_fun(*this, &Client::receiveMessage),100 );
 
     grid->attach(*button1, 2, 2, 1, 1);
     grid->attach(*button5, 1, 2, 1, 1);
@@ -254,7 +254,7 @@ void Client::on_button2_click()
 {
     //displayText("mitesh","hi hows there");
     //exit(1);
-    sendMessage("Goodbye");
+    sendMessage((Username+":"+"Goodbye").c_str());
     displayText("me","Goodbye");
     hide();
 }
@@ -285,14 +285,10 @@ void Client::on_button1_click()
 
 std::string Client::onlineClients()
 {
-    sendMessage("online clients");
-    if(recv(sockfd, buf, 255, MSG_DONTWAIT)>0)
-    {
+    sendMessage((Username+":"+"online clients").c_str());
+    recv(sockfd, buf, 255, 0);
+		
     	return string(buf);
-	}
-	else
-	return "Error";
-    
 }
 
 void Client::showClients()
