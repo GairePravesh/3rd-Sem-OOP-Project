@@ -111,8 +111,9 @@ bool receiveMessage()
 {
     while(recv(sockfd, buf, 255, MSG_DONTWAIT) >0){
     //exit(1);
-
-    displayText("seerver sent:",string(buf));
+    int pos=string(buf).find(":");
+    cout<<buf<<endl;
+    displayText(string(buf).substr(0,pos),string(buf).substr(pos+1));
     }
     return true;
 
@@ -216,14 +217,20 @@ public:
         Gtk::Button *button1 = Gtk::manage(new Gtk::Button("Send Message"));
         Gtk::Button *button2 = Gtk::manage(new Gtk::Button("Leave Group"));
         Gtk::Button *button3 = Gtk::manage(new Gtk::Button("Send File"));
+        Gtk::Button *button4 = Gtk::manage(new Gtk::Button("Clear Window"));
+        Gtk::Button *button5 = Gtk::manage(new Gtk::Button("Online CLients"));
         button1->signal_clicked().connect(sigc::mem_fun(*this, &myWindow::on_button1_click));
         button2->signal_clicked().connect(sigc::mem_fun(*this, &myWindow::on_button2_click));
         button3->signal_clicked().connect(sigc::mem_fun(*this, &myWindow::on_button3_click));
+        button4->signal_clicked().connect(sigc::mem_fun(*this, &myWindow::on_button4_click));
+        button5->signal_clicked().connect(sigc::mem_fun(*this, &myWindow::showClients));
         Glib::signal_timeout().connect( sigc::mem_fun(*this, &myWindow::receiveMessage),50 );
 
         grid->attach(*button1, 2, 2, 1, 1);
-        grid->attach(*button2, 1, 2, 1, 1);
+        grid->attach(*button5, 1, 2, 1, 1);
         grid->attach(*button3, 0, 2, 1, 1);
+        grid->attach(*button2, 1, 3, 1, 1);
+        grid->attach(*button4, 2, 3, 1, 1);
         vbox->show_all();
      //  Glib::signal_idle().connect( sigc::mem_fun(*this, &myWindow::receiveMessage) );
 
@@ -240,6 +247,11 @@ virtual ~myWindow()
 }
 protected:
 
+    void on_button4_click()
+    {
+        refTreeModel->clear();
+
+    }
     void on_button3_click()
     {
         //treeview->
@@ -267,13 +279,15 @@ protected:
             label->set_markup("<span color='black'>Enter Message: </span>");
 
             emessage=text->get_text();
+            emessage=Username+":"+emessage;
             //sendMessage(emessage);
             //displayText(Username,emessage);
             //Gtk::ListStore::clear();
-            text->set_text("");
+
            sendMessage(emessage.c_str());
-           displayText("client msg:",emessage);
-            receiveMessage();
+           displayText(Username,text->get_text());
+           text->set_text("");
+            //receiveMessage();
 
 
         }
@@ -293,15 +307,8 @@ protected:
     }
     void displayText(std::string User,string mesg)
     {
-        if(mesg=="clear window")
-            refTreeModel->clear();
 
-        else if(mesg=="online clients")
-        {
-            showClients();
-        }
-        else
-        {
+
             //
             Gtk::TreeModel::Row row = *(refTreeModel->append());
             row[columns.col_name] = User;
@@ -310,7 +317,7 @@ protected:
             row[columns.col_text] = mesg;
             //row[columns.col_online]=onlineClients();
 
-        }
+
 
     }
 
