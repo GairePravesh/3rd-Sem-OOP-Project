@@ -3,7 +3,7 @@
                                                     A Local Area Network Messaging App 
 ###########################################################################################################################################
 
-Language Used\n
+Language Used<br>
 * C++\n
 Tech used\n
 * Gtkmm3.0 for GUI impmlementation and TCP Socket for communication over network\n
