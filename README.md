@@ -1,55 +1,55 @@
 ###########################################################################################################################################
-                                                          <b>Locenger</b>
+                                                          <b>Locenger</b>\n
                                                     A Local Area Network Messaging App 
 ###########################################################################################################################################
 
-Language Used
-* C++
-Tech used
-* Gtkmm3.0 for GUI impmlementation and TCP Socket for communication over network
+Language Used\n
+* C++\n
+Tech used\n
+* Gtkmm3.0 for GUI impmlementation and TCP Socket for communication over network\n
 
-By-
-Alex Bhattrai
-Prashant Bhatta
-Pravesh Gaire
-Sishir Panta
+By-\n
+Alex Bhattrai\n
+Prashant Bhatta\n
+Pravesh Gaire\n
+Sishir Panta\n
 
 
 ###########################################################################################################################################
-                                                   A minor project for 3rd Sem OOP project 
+                                                   A minor project for 3rd Sem OOP project \n
 ###########################################################################################################################################
 
-Feautres
-* Multi Client Handling Server using select()
-* Read / Write at same time using timers and non-blocking mode
-* File transfer ( Under Development ) 
-* Group Chat
-* Online Clients information
-* User friendly GUI 
-* Login System ( Enter username, default password is password ) 
+Feautres\n
+* Multi Client Handling Server using select()\n
+* Read / Write at same time using timers and non-blocking mode\n
+* File transfer ( Under Development ) \n
+* Group Chat\n
+* Online Clients information\n
+* User friendly GUI \n
+* Login System ( Enter username, default password is password ) \n
 
-Some features are underdevlopment due to lack of time and other subject pressures! 
-Gtk used over to Qt as Qt was not permitted to use
+Some features are underdevlopment due to lack of time and other subject pressures! \n
+Gtk used over to Qt as Qt was not permitted to use\n
 
 
 ########################################################################################################################################
-Usage:
-* set the ip address and port in the server.hpp and client.cpp as per requirements
-* build and run server.cpp on terminal 
-* build main.cpp on other terminal
-* open the exe file as much as you can and enjoy chatting. (10 max Clients)
+Usage:\n
+* set the ip address and port in the server.hpp and client.cpp as per requirements\n
+* build and run server.cpp on terminal \n
+* build main.cpp on other terminal\n
+* open the exe file as much as you can and enjoy chatting. (10 max Clients)\n
 
-for server:
- g++ server.cpp -o server
- ./server
+for server:\n
+ g++ server.cpp -o server\n
+ ./server\n
  
- for client
- g++ main.cpp Client.cpp -o main `pkg-config --cflags --libs gtkmm-3.0`
- ./main
+ for client\n
+ g++ main.cpp Client.cpp -o main `pkg-config --cflags --libs gtkmm-3.0`\n
+ ./main\n
 
 ########################################################################################################################################
-Note:
-The project might be stopped within this, was developed as class project
-Real implementation and further features will be added in new App using Qt 
-So follow for more 
+Note:\n
+The project might be stopped within this, was developed as class project\n
+Real implementation and further features will be added in new App using Qt\n 
+So follow for more \n
 
