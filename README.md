@@ -47,7 +47,8 @@ for server:<br>
  for client<br>
  g++ main.cpp Client.cpp -o main `pkg-config --cflags --libs gtkmm-3.0`<br>
  ./main
-
+########################################################################################################################################
+Detailed Information given in report.pdf file
 ########################################################################################################################################
 Note:<br>
 The project might be stopped within this, was developed as class project<br>
