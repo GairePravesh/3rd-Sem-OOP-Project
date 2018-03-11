@@ -35,7 +35,7 @@ void  Client::createClientSocket()
     else */
     try
     {
-        if((rv = getaddrinfo("127.0.0.1","8888", &hints, &servinfo)) != 0)
+        if((rv = getaddrinfo("127.0.0.1","8080", &hints, &servinfo)) != 0)
         {
             throw(-1);
             //cout<<"Error on getaddrinffo";

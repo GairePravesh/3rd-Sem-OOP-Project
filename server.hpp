@@ -10,7 +10,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include<cstdlib>
-#define PORT "8888"   // port we're listening on
+#define PORT "8080"   // port we're listening on
 using namespace std;
 
 class Server
