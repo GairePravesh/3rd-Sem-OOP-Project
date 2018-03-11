@@ -23,7 +23,6 @@ Client::Client()
 
 void  Client::createClientSocket()
   {
-
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -31,28 +30,59 @@ void  Client::createClientSocket()
 	/*if ((rv = getaddrinfo(argv[1],argv[2], &hints, &servinfo)) != 0)
     {
         cout<<"Error on getaddrinffo";
-        exit(1);
-    }*/
-    if ((rv = getaddrinfo("127.0.0.1","8888", &hints, &servinfo)) != 0)
+        //exit(1);
+    }
+    else */
+    try
     {
-        cout<<"Error on getaddrinffo";
+        if((rv = getaddrinfo("127.0.0.1","8888", &hints, &servinfo)) != 0)
+        {
+            throw(-1);
+            //cout<<"Error on getaddrinffo";
+            //exit(1);
+        }
+    }catch(int i)
+    {
+        cout<<"erro on getaddrifno"<<endl;
         exit(1);
     }
+
 
     // loop through all the results and connect to the first we can
     for(p = servinfo; p != NULL; p = p->ai_next) {
-        if ((sockfd = socket(p->ai_family, p->ai_socktype,
-                p->ai_protocol)) == -1) {
-            continue;
-        }
+        try
+        {
+            if ((sockfd = socket(p->ai_family, p->ai_socktype,
+                p->ai_protocol)) == -1)
+            {
+                throw(-1);
+                continue;
+            }
 
-        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-           // close(sockfd);
-            exit(1);
         }
+        catch(int i)
+    {
+        cout<<"exception error caught on connecting to socket!"<<endl;
+        exit(1);
+    }
+
+        try
+        {
+            if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1)
+            {
+               // close(sockfd);
+                throw(-1);
+            }
+        }
+	catch(int i)
+    {
+        cout<<"exception error caught on connecting to socket!"<<endl;
+        exit(1);
+    }
 
         break;
     }
+    
 
     if (p == NULL) {
         cout<<"client failed to connect";
@@ -185,7 +215,7 @@ void Client::sendMessage(const char *buffer)
     {
     //buffer=sm.c_str();
     if ((numbytes = send(sockfd, buffer, 255, 0)) == -1) {
-        perror("recv");
+        cout<<"recv";
         exit(1);
     }
 
@@ -287,7 +317,7 @@ std::string Client::onlineClients()
 {
     sendMessage((Username+":"+"online clients").c_str());
     recv(sockfd, buf, 255, 0);
-		
+
     	return string(buf);
 }
 

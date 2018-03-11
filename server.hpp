@@ -18,7 +18,7 @@ class Server
 private:
 	fd_set master;    // master file descriptor list
     fd_set read_fds;  // temp file descriptor list for select()
-    int fdmax=10;        // maximum file descriptor number
+    int fdmax;        // maximum file descriptor number
 
     int listener;     // listening socket descriptor
     int newfd;        // newly accept()ed socket descriptor
@@ -110,9 +110,10 @@ void initSocket()
 }
 
 
+
 void runServer()
 {
-read_fds = master; // copy it
+	read_fds = master; // copy it
         if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
             cout<<"error on select"<<endl;
             exit(4);
@@ -127,6 +128,8 @@ read_fds = master; // copy it
                     newfd = accept(listener,
                         (struct sockaddr *)&remoteaddr,
                         &addrlen);
+                        
+                        
 						for(int itr=0; itr<fdmax; itr++) {
 					if(client_socket[itr] == 0) {
 						client_socket[itr] = newfd;
