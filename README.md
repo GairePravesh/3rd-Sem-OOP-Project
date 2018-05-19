@@ -50,8 +50,6 @@ for server:<br>
 ########################################################################################################################################
 Detailed Information given in report.pdf file
 ########################################################################################################################################
-Note:<br>
+<br>
 The project might be stopped within this, was developed as class project<br>
-Real implementation and further features will be added in new App using Qt<br> 
-So follow for more <br>
 
